@@ -84,14 +84,14 @@
 			float menger(float3 pos) {
 				float d = cross(pos);
 				float3 cube = max3(abs(pos) - (float3).5);
-				for (int i = 0; i < 1; i++) {
+				for (int i = 0; i < 4; i++) {
 					pos = frac(3.*pos + (float3).5) - (float3).5;
-					//d = min(d, cross(pos));
-					d = cross(pos);
+					d = min(d, cross(pos)/pow(3.,(float)i+1));
+					//d = cross(pos);
 				}
 				//if (max3(abs(pos)) > .6) return cube;
-				d = max(cube, d);
-				//d = max(cube, -d);
+				//d = max(cube, d);
+				d = max(cube, -d);
 				return d;
 			}
 
@@ -152,8 +152,8 @@
 					o.color.xyz = col*ShadeSH9(half4(normal, 1));
 				}
 				else{
-					o.color.xyz = float3(1., 0., 0.)*ShadeSH9(half4(normal, 1));
-					//discard;
+					//o.color.xyz = float3(1., 0., 0.)*ShadeSH9(half4(normal, 1));
+					discard;
 				}
 				return o;
 			}
